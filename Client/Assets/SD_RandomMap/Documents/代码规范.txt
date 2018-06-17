@@ -1,0 +1,6 @@
+﻿1. 所有的项目文件文件必须放到SD_RandomMap, 不得放到其他目录
+2. 成员变量都需要加_, 如 _roleName
+3. 所有的类,必须被包含于 namespace SuperDreamTools
+4. 类名都以SD_开头, 避免别人导入工程的时候重复
+5. 函数名大驼峰
+6. 常量用下划线+单词,如: MAX_MAP_COUNT_X, MAX_MAP_COUNT_Y;

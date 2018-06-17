@@ -1,0 +1,4 @@
+Client/Library/*
+Client/Temp/*
+*.sln
+*.csproj
