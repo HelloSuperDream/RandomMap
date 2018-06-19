@@ -4,6 +4,7 @@
 	{
 		_MainTex ("Texture", 2D) = "white" {}
 		_LightingTex ("Texture", 2D) = "white"{} 
+		_PassParam ("PassParam", Vector) = (1, 1, 1, 1)
 	}
 	SubShader
 	{
@@ -12,9 +13,9 @@
 		Tags
 		{
 			"Queue" = "Transparent"
+			
 			"IgnoreProjector" = "True"
 			"RenderType" = "Transparent"
-			"PreviewType"="Plane"
 			"CanUseSpriteAtlas"="True"
 		}
 
@@ -58,6 +59,7 @@
 			sampler2D _LightingTex;
 			float4 _LightingTex_ST;
 			
+			half4 _PassParam;
 			v2f vert (appdata v)
 			{
 				v2f o;
@@ -71,10 +73,15 @@
 			{
 				// sample the texture
 				fixed4 col = tex2D(_MainTex, i.uv);
+				//col.rgb /= 2;
+
+				col.rgb *= _PassParam.x;
 
 				fixed4 lightingTex = tex2D(_LightingTex, i.uv);
 
-				col.a = 1 - lightingTex.b;
+				col.a = 1 - lightingTex;
+
+				col.a *= _PassParam.y;
 
 				// apply fog
 				UNITY_APPLY_FOG(i.fogCoord, col);
@@ -85,7 +92,7 @@
 			
 		}
 
-		
+		/*
 		Pass
 		{
 			blend SrcAlpha One
@@ -117,6 +124,8 @@
 			sampler2D _LightingTex;
 			float4 _LightingTex_ST;
 
+			half4 _PassParam;
+
 			v2f vert (appdata v)
 			{
 				v2f o;
@@ -131,17 +140,18 @@
 				// sample the texture
 				fixed4 col = tex2D(_MainTex, i.uv);
 
+				col.rgb *= _PassParam.y;
+
 				fixed4 lightingTex = tex2D(_LightingTex, i.uv);
 
-				col.a = 1 - lightingTex.b;
-
+				col.a = lightingTex.b;
 				// apply fog
 				UNITY_APPLY_FOG(i.fogCoord, col);
 				return col;
 			}
 			ENDCG
 		}
-
+		*/
 		
 	}
 }
