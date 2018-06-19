@@ -12,6 +12,7 @@ namespace SuperDreamArmTools
         public static void ArmToolTest()
         {
             Debug.Log("ArmToolTest");
+            Debug.Log("ArmToolTest isOk = " + isOk);
         }
     }
 }
