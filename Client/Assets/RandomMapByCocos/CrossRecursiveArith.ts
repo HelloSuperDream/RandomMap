@@ -9,9 +9,11 @@ import { ArithmeticVo, TerrainType } from "./ArithmeticVo";
 //4.同时两条线会划分出新的4个矩形，小矩形继续回到2如此递归
 //5.直到所有小矩形分割到width或者height小于3,分割完成
 export class CrossRecursiveArith extends ArithmeticVo{
-    constructor(w,h){
+    private _minArea:number = 0;
+    constructor(w,h,area){
         super(w,h);
 
+        this._minArea = area;
         this.initTerrainMap();
         this.start();
     }
@@ -40,13 +42,13 @@ export class CrossRecursiveArith extends ArithmeticVo{
     }
 
     private CrossRecursive(rect:cc.Rect){
-        //宽高小于3，停止分割
-        if(rect.width < 3 || rect.height < 3){
+        let area = rect.width*rect.height;
+        //面积小于给定值停止分割（宽高小于3是强制限制）
+        if(area <= this._minArea || rect.width < 3 || rect.height < 3){
             return;
         }
 
         let littleRects = this.segmentationRect(rect);
-        cc.log(littleRects);
 
         littleRects.forEach(element => {
             this.CrossRecursive(element);

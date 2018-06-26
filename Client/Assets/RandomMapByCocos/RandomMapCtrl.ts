@@ -10,11 +10,20 @@ enum ArithmeticType{
 
 @ccclass
 export class RandomMapCtrl extends cc.Component {
-    @property
-    mapWidth:number = 11;
+    @property({
+        tooltip:"这里必须是奇数",
+    })
+    mapWidth:number = 51;
 
-    @property
-    mapHeight:number = 11;
+    @property({
+        tooltip:"这里必须是奇数",
+    })
+    mapHeight:number = 51;
+
+    @property({
+        tooltip:"单块地形的尺寸",
+    })
+    terrainSize:number = 32;
 
     @property(cc.Prefab)
     roadPf: cc.Prefab = null;
@@ -28,11 +37,17 @@ export class RandomMapCtrl extends cc.Component {
     })
     useArithmetic:ArithmeticType = ArithmeticType.DFS;
 
+    @property({
+        tooltip:"选择CROSS_RECURSIVE时参数生效\n表示最小分割面积",
+    })
+    minArea:number = 21;
+
+
     private _terrainMap:Array<number> = [];//0表示road，1表示barrier
 
     onLoad(){
         this.node.removeAllChildren();
-        this.node.width = this.mapWidth*50;
+        this.node.width = this.mapWidth*this.terrainSize;
 
         this.generateMap();
     }
@@ -45,7 +60,7 @@ export class RandomMapCtrl extends cc.Component {
 
         }else if(this.useArithmetic == ArithmeticType.CROSS_RECURSIVE){
             //采用十字递归分割
-            arithObject = new CrossRecursiveArith(this.mapWidth,this.mapHeight);
+            arithObject = new CrossRecursiveArith(this.mapWidth,this.mapHeight,this.minArea);
         }
         this._terrainMap = arithObject.getResult();
 
